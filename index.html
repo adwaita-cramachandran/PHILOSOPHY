@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedanta Battle Quiz</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+  background: linear-gradient(to bottom, #fff5e6, #ffe0b3);
+  text-align: center;
+  color: #5a2d0c;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.question {
+  margin: 20px 0;
+  font-size: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  padding: 8px;
+  font-size: 18px;
+}
+
+button {
+  background-color: #cc6600;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #994d00;
+}
+
+#result {
+  margin-top: 30px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.progress-bar {
+  height: 20px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 1s ease-in-out;
+}
+
+.diya {
+  width: 60px;
+  margin: 20px auto;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 5px orange); }
+  to { filter: drop-shadow(0 0 20px gold); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>🔱 Vedanta Battle Quiz 🔱</h1>
+
+<form id="quizForm">
+
+<div class="question">
+1. Is the world ultimately real?
+<label><input type="radio" name="q1" value="advaita"> No, it is maya (appearance)</label>
+<label><input type="radio" name="q1" value="dvaita"> Yes, eternally real</label>
+<label><input type="radio" name="q1" value="vishishta"> Real but dependent on Brahman</label>
+</div>
+
+<div class="question">
+2. What happens at moksha?
+<label><input type="radio" name="q2" value="advaita"> Complete identity with Brahman</label>
+<label><input type="radio" name="q2" value="dvaita"> Eternal service to Vishnu</label>
+<label><input type="radio" name="q2" value="vishishta"> Unity in diversity with Narayana</label>
+</div>
+
+<div class="question">
+3. Relationship between soul and God?
+<label><input type="radio" name="q3" value="advaita"> Ultimately identical</label>
+<label><input type="radio" name="q3" value="dvaita"> Eternally different</label>
+<label><input type="radio" name="q3" value="vishishta"> Body-soul relationship</label>
+</div>
+
+<div class="question">
+4. Highest means to liberation?
+<label><input type="radio" name="q4" value="advaita"> Knowledge (Jnana)</label>
+<label><input type="radio" name="q4" value="dvaita"> Bhakti and grace</label>
+<label><input type="radio" name="q4" value="vishishta"> Loving surrender (Prapatti)</label>
+</div>
+
+<button type="button" onclick="calculateResult()">Reveal My Darshana</button>
+
+</form>
+
+<div id="result"></div>
+<div class="progress-bar"><div id="barAdvaita" class="progress-fill" style="background: #ff9933;"></div></div>
+<div class="progress-bar"><div id="barDvaita" class="progress-fill" style="background: #cc3300;"></div></div>
+<div class="progress-bar"><div id="barVishishta" class="progress-fill" style="background: #ffcc66;"></div></div>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Diya_lamp.jpg/120px-Diya_lamp.jpg" class="diya">
+
+</div>
+
+<audio id="bellSound">
+<source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function calculateResult() {
+  let advaita = 0, dvaita = 0, vishishta = 0;
+
+  const answers = document.querySelectorAll("input[type='radio']:checked");
+  if (answers.length < 4) {
+    alert("Please answer all questions 🙏");
+    return;
+  }
+
+  answers.forEach(a => {
+    if (a.value === "advaita") advaita++;
+    if (a.value === "dvaita") dvaita++;
+    if (a.value === "vishishta") vishishta++;
+  });
+
+  let total = advaita + dvaita + vishishta;
+  let advPercent = Math.round((advaita / total) * 100);
+  let dvaPercent = Math.round((dvaita / total) * 100);
+  let visPercent = Math.round((vishishta / total) * 100);
+
+  document.getElementById("barAdvaita").style.width = advPercent + "%";
+  document.getElementById("barDvaita").style.width = dvaPercent + "%";
+  document.getElementById("barVishishta").style.width = visPercent + "%";
+
+  let resultText = "";
+
+  if (advPercent > dvaPercent && advPercent > visPercent) {
+    resultText = "🕉 You lean toward ADVAITA Vedanta\n\nTat Tvam Asi.";
+  } else if (dvaPercent > advPercent && dvaPercent > visPercent) {
+    resultText = "🔱 You lean toward DVAITA Vedanta\n\nHari Sarvottama.";
+  } else {
+    resultText = "🌸 You lean toward VISHISHTADVAITA\n\nNarayana Supreme.";
+  }
+
+  document.getElementById("result").innerText =
+    resultText + "\n\nAdvaita: " + advPercent +
+    "% | Dvaita: " + dvaPercent +
+    "% | Vishishtadvaita: " + visPercent + "%";
+
+  document.getElementById("bellSound").play();
+}
+</script>
+
+</body>
+</html>
